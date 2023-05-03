@@ -1,0 +1,100 @@
+\documentclass{IEEEtran}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+\ifCLASSINFOpdf
+   \usepackage[pdftex]{graphicx}
+\else
+   \usepackage[dvips]{graphicx}
+\fi
+
+\ifCLASSOPTIONcompsoc
+  \usepackage[caption=false, font=normalsize, labelfont=sf, textfont=sf]{subfig}
+\else
+  \usepackage[caption=false, font=footnotesize]{subfig}
+\fi
+
+\usepackage{textcomp}
+\usepackage{nicefrac}
+\usepackage{siunitx}
+\usepackage{fancyref}
+
+\usepackage[style=ieee, doi=false, isbn=false, url=false, maxbibnames=1, minbibnames=1, maxcitenames=1, mincitenames=1, backend=biber, defernumbers=false]{biblatex}
+\addbibresource{./references.bib}
+
+% \AtEveryBibitem{\clearfield{month}}
+% \AtEveryBibitem{\clearfield{day}}
+% \AtEveryBibitem{\clearfield{volume}}
+% \AtEveryBibitem{\clearfield{issue}}
+% \AtEveryBibitem{\clearfield{pages}}
+% \AtEveryBibitem{\clearfield{number}}
+% \AtEveryBibitem{\clearfield{title}}
+% \AtEveryBibitem{\clearfield{isbn}}
+% \AtEveryBibitem{\clearfield{keywords}}
+% \AtEveryBibitem{\clearfield{issn}}
+% \AtEveryBibitem{\clearfield{journal}}
+
+\usepackage[activate={true, nocompatibility}, final, tracking=true, kerning=true, spacing=true, factor=1100, stretch=10, shrink=10]{microtype}
+% \linespread{0.9}
+
+\input{glossaries}
+
+% \markboth{IEEE TRANSACTIONS ON NUCLEAR SCIENCE, VOL. XX, NO. XX, XXXX 2020}
+% {Author \MakeLowercase{\textit{et al.}}: Preparation of Papers for Review by the \textsc{IEEE Transactions on Nuclear  Science} \newline (May 2020)}
+
+\usepackage{lipsum}
+
+\begin{document}
+    \title{
+        % \vspace{-0.75cm}
+        
+        A Bayesian Neural Network Based-Method for Survival Analysis of Idiopathic Pulmonary Fibrosis Patients from CT
+    }
+    
+    \author{
+        % \vspace{-0.25cm}
+
+        Ahmed~H.~Shahin,
+        Alexander~C.~Whitehead~\IEEEmembership{Student~Member,~IEEE},
+        An~Zhao,
+        Daniel~C.~Alexander,
+        Joseph~Jacob,
+        and~David~Barber
+    
+        % \vspace{-0.75cm}
+
+        \thanks{This work was funded by \gls{OSIC}.}
+        \thanks{Ahmed~H.~Shahin, Alexander~C.~Whitehead, An~Zhao, Daniel~C.~Alexander, and David~Barber are with the Department of Computer Science, University College London, London, UK.}
+        \thanks{Ahmed~H.~Shahin, An~Zhao, Daniel~C.~Alexander, and Joseph~Jacob are with the Centre for Medical Image Computing, University College London, London, UK.}
+        \thanks{Joseph~Jacob is with Lungs for Living Research Centre, University College London, London, UK.}
+        \thanks{David~Barber is with the Centre for Artificial Intelligence, University College London, London, UK.}
+        \thanks{(contact: \texttt{alexander.whitehead.18@ucl.ac.uk}).}
+    }
+    
+    \pagestyle{plain}
+    \pagenumbering{gobble}
+    
+    \maketitle
+    
+    \begin{abstract}
+        to do
+    \end{abstract}
+    
+    % \begin{IEEEkeywords}
+        
+    % \end{IEEEkeywords}
+    
+    \input{introduction}
+    \input{methods}
+    \input{results}
+    \input{discussion_and_conclusion}
+    
+    % \vspace{-0.5cm}
+    
+    \AtNextBibliography{
+        % \scriptsize
+        }
+    \printbibliography
+\end{document}
