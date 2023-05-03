@@ -1,25 +1,43 @@
 % \vspace{-0.5cm}
 
 \section{Results} \label{sec:results}
-    \resizebox*{1.0\linewidth}{!}
-    {
-        \begin{tabular}{||c|cc|c|c||}
-            \hline
-                                        & \textbf{\gls{MAE} UC} & \textbf{\gls{RAE} UC} & \textbf{C-Index}  & \textbf{Brier}    \\
-            \hline
-            \textbf{U Likelihood}       & $22.7+-1.51$          & $1.72+-0.89$          & $0.77+-0.05$      & $0.22+-0.07$      \\
-            \textbf{U Likelihood CF}    & $21.5+-1.32$          & $1.98+-0.82$          & $0.80+-0.03$      & $0.18+-0.05$      \\
-            \textbf{Likelihood}         & $28.9+-1.96$          & $2.23+-0.01$          & $0.76+-0.05$      & $0.25+-0.01$      \\
-            \textbf{Likelihood CF}      & $25.3+-1.74$          & $2.04+-0.01$          & $0.79+-0.04$      & $0.20+-0.01$      \\
-            \hline
-            \textbf{Cox}                & $187 +-309 $          & $17.0+-30.7$          & $0.73+-0.04$      & $0.61+-0.28$      \\
-            \textbf{Cox CF}             & $187 +-287 $          & $17.0+-30.7$          & $0.73+-0.04$      & $0.61+-0.28$      \\
-            \textbf{Cox \gls{MB}}       & $?.??+-?.??$          & $?.??+-?.??$          & $?.??+-?.??$      & $?.??+-?.??$      \\
-            \textbf{Cox \gls{MB} CF}    & $?.??+-?.??$          & $?.??+-?.??$          & $?.??+-?.??$      & $?.??+-?.??$      \\
-            \hline
-            \textbf{DeepHit}            & $38.4+-14.8$          & $3.99+-0.34$          & $0.72+-0.03$      & $0.40+-0.01$      \\
-            \textbf{DeepHit CF}         & $38.4+-14.8$          & $3.99+-0.34$          & $0.72+-0.03$      & $0.40+-0.01$      \\
-            \hline
-        \end{tabular}
-    }
-    \label{tab:table}
+    \begin{table}
+        % \vspace{-0.5cm}
+        
+        \centering
+        
+        \captionsetup{singlelinecheck=false, justification=centering}
+        \caption{
+        % \tiny
+        A comparison of \gls{MAE} and \gls{RAE} calculated for the uncensored predictions and true data plus the concordance index and the Brier score.}
+        
+        % \vspace{-0.5cm}
+        
+        % \resizebox*{1.0\linewidth}{!}
+        \resizebox*{1.0\linewidth}{!}
+        {
+            \begin{tabular}{||c|cc|c|c||}
+                \hline
+                                            & \textbf{\gls{MAE} UC} & \textbf{\gls{RAE} UC} & \textbf{C-Index}  & \textbf{Brier}    \\
+                \hline
+                \textbf{U Likelihood}       & $22.7+-1.51$          & $1.72+-0.89$          & $0.77+-0.05$      & $0.22+-0.07$      \\
+                \textbf{U Likelihood CF}    & $21.5+-1.32$          & $1.98+-0.82$          & $0.80+-0.03$      & $0.18+-0.05$      \\
+                \textbf{Likelihood}         & $28.9+-1.96$          & $2.23+-0.01$          & $0.76+-0.05$      & $0.25+-0.01$      \\
+                \textbf{Likelihood CF}      & $25.3+-1.74$          & $2.04+-0.01$          & $0.79+-0.04$      & $0.20+-0.01$      \\
+                \hline
+                \textbf{Cox}                & $187 +-309 $          & $17.0+-30.7$          & $0.73+-0.04$      & $0.61+-0.28$      \\
+                \textbf{Cox CF}             & $233 +-287 $          & $26.4+-21.9$          & $0.72+-0.03$      & $0.57+-0.16$      \\
+                \textbf{Cox \gls{MB}}       & $?.??+-?.??$          & $?.??+-?.??$          & $?.??+-?.??$      & $?.??+-?.??$      \\
+                \textbf{Cox \gls{MB} CF}    & $?.??+-?.??$          & $?.??+-?.??$          & $?.??+-?.??$      & $?.??+-?.??$      \\
+                \hline
+                \textbf{DeepHit}            & $38.4+-14.8$          & $3.99+-0.34$          & $0.72+-0.03$      & $0.40+-0.01$      \\
+                \textbf{DeepHit CF}         & $31.3+-9.19$          & $3.50+-0.42$          & $0.71+-0.04$      & $0.41+-0.01$      \\
+                \hline
+            \end{tabular}
+        }
+        \label{tab:table}
+        
+        % \vspace{-0.5cm}
+    \end{table}
+
+    From~\Fref{tab:table} it can be seen that the the \gls{MAE} and \gls{RAE} are often lower for both likelihood based methods than for all other methods. The \gls{MAE} and \gls{RAE} for the DeepHit method is lower than that of the Cox based methods, while for the Cox based methods not only are their errors high but from their variance they also seem to be semi-random. The \gls{MAE} and \gls{RAE} of the uniform likelihood method is commonly lower than that of the standard likelihood method. The Brier score results also back up this assertion, however it is difficult to draw conclusions from the concordance index results. The results also seem to indicate that there is some benefit to including the clinical features, although it's uncertain if this is just because the model becomes marginally larger and in some cases it seems from the increase in \gls{RAE} that the inclusion of the clinical features may bias the results.
