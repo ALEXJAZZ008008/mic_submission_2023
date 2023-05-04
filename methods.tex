@@ -2,33 +2,28 @@
 
 \section{Methods} \label{sec:methods}
     \subsection{Data Acquisition and Preparation} \label{sec:data_acquisition_and_preparation}
-        $550$ \gls{CT} acquisitions were taken from the \gls{OSIC} data set~\cite{}. Each acquisition had a \gls{FOV} containing the base of the lung, heart and upper lung and was segmented to remove data outside of the lung and normalised independently. Where appropriate clinical features, such as age, sex, and medical data (David -- incomplete sentence). If missing clinical features were present their value was inferred~\cite{Shahin2022SurvivalData}. Data were split into train and test groups following five fold \gls{CV}. (David -- in our previous work, we sample these missing values  -- we don't replace infer them with a fixed value -- I'm not clear on what you've implemented -- did you do sampling?)
+        $550$ \gls{CT} acquisitions were taken from the \gls{OSIC} data set~\cite{OSICRepository}. Each acquisition had a \gls{FOV} containing the base of the lung, heart and upper lung. Each acquisition was segmented to remove data outside of the lung and normalised independently. Where appropriate clinical features, such as age, sex, and medical data were also used. If missing clinical features were present their value was imputed following~\cite{Shahin2022SurvivalData}. Data were split into train and test groups using five fold \gls{CV}.
 
-    \subsection{Training} \label{sec:training}
-        Each \gls{NN} consisted of seven \gls{CNN} blocks, within which was two convolutions with stride one and one with stride two (to reduce the spatial dimension). Each convolution had a kernel size of three and used an orthogonal activation. Between each layer was a \gls{PReLU} activation~\cite{He2015DelvingClassification}, initialised with an alpha of one, which starts the network linear and allows it to become more non-linear as training progresses. Seven \gls{CNN} blocks were selected as this is the maximum number of downsampling steps possible with the data used. At each downsampling step the number of channels doubled.
+    \subsection{Models} \label{sec:models}
+        Each \gls{NN} consisted of seven \gls{CNN} blocks, within which were two convolutions with stride one and one with stride two (to reduce the spatial dimension). Each convolution had a kernel size of three and used an orthogonal activation. Between each layer was a \gls{PReLU} activation~\cite{He2015DelvingClassification}, initialised with an alpha of one (meaning the network begins linear and becomes more non-linear as training progresses). At each downsampling step the number of channels doubled. Global average pooling and flattening layers were used before a number of fully connected layers were used to reduce the number of units until it equals the output size by halving each time. When clinical features were used, they were concatenated to the output of the flattening layer. A softplus activation was used at the output for numerical stability.
 
-        After the feature extraction section a global average pooling and flattening layer were used before being passed through a number of fully connected layers. 
-        
-        David -- I don't understand the following sentences:
-        When clinical features were used, a number of fully connected layers were used to increase the number of units to be equal to the number from the previous step, where the number of units doubled at each layer. At each layer the number of units halved and the number of layers was defined by the number needed to reduce the number of units to the output size. A softplus activation was used at the output for numerical stability.
+        AdamW was used as the optimiser with weight decay to improve the convergence rate as well as to penalise against large weights and overfitting~\cite{Loshchilov2019DecoupledRegularization}. The learning rate started at zero and increased linearly to the target learning rate over the first one tenth of iterations before reducing back to zero over the next nine tenths. For each loss calculation a batch size of four was used, this is because Cox loss requires a batch size greater than one and for the sake of comparison the same number was used for all losses. This was approximately increased to $32$ using gradient accumulation, meaning eight gradients were averaged together at each iteration.
 
-        AdamW was used as the optimiser with weight decay to improve the convergence rate as well as to penalise against large weights and overfitting~\cite{Loshchilov2019DecoupledRegularization}. The learning rate started at zero and increased linearly to the target learning rate over the first one tenth of iterations before reducing back to zero over the next nine tenths.
-
-        David -- I don't understand the following sentence: A batch size of four was used (because of Cox loss) but was increased to $32$ using gradient accumulation. David -- why did you need to use a batch size of 4 for the likelihood losses?
-
-        Five loss functions were used: David -- I don't think anyone can understand this. I don't know what kind of likelihood methods you're using for censoring either. 
+        For comparison, five loss functions were trialed:
 
         \begin{itemize}
-            \item \textbf{Uniform Likelihood} - Gaussian likelihood loss using a uniform distribution to sample censoring time (with a fixed \gls{STD} equal to one year).
+            \item \textbf{Uniform Likelihood} - Gaussian likelihood loss where the censoring time was sampled from a uniform distribution from time zero up to the death time~\cite{Shahin2023DeepAnalysis}.
 
-            \item \textbf{Likelihood} - Gaussian likelihood loss (with a fixed \gls{STD} equal to one year).
+            \item \textbf{Likelihood} - Gaussian likelihood loss where the censoring time was sampled from a Gaussian distribution parameterised by the censor time.
 
-            \item \textbf{Cox} - Cox Proportional Hazards loss (converted to survival times using the Breslow estimator)~\cite{Cox1972RegressionLife-Tables}.
+            \item \textbf{Cox} - Cox Proportional Hazards loss~\cite{Cox1972RegressionLife-Tables}.
 
-            \item \textbf{Cox \gls{MB}} - Cox Proportional Hazards loss with \gls{MB} (converted to survival times using the Breslow estimator~\cite{Breslow1974CovarianceData})~\cite{Shahin2022SurvivalData}.
+            \item \textbf{Cox \gls{MB}} - Cox Proportional Hazards loss with \gls{MB}~\cite{Shahin2022SurvivalData}.
 
             \item \textbf{DeepHit} - DeepHit loss (log-likelihood, with a maximum output value of $105$ years and $840$ bins)~\cite{Lee2018DeepHit:Risks}.
         \end{itemize}
 
+        For both likelihood losses a fixed \gls{STD} equal to one year was used. For both Cox losses the output was converted to survival times using the Breslow estimator~\cite{Breslow1974CovarianceData}.
+
     \subsection{Evaluation} \label{sec:evaluation}
-        For evaluation of the results the following methods were used; the \gls{MAE} and \gls{RAE} for the uncensored data between the predicted and true value was taken, the concordance index, the Brier score and a visual analysis of Grad-CAM images~\cite{Raykar2008OnIndex, Gerds2006ConsistentTimes, Selvaraju2020Grad-CAM:Localization}.
+        For evaluation of the results of the five loss functions the following methods were used; the \gls{MAE} and \gls{RAE} for the uncensored data between the predicted and true value was taken, the concordance index, the Brier score and a visual analysis of Grad-CAM images~\cite{Raykar2008OnIndex, Gerds2006ConsistentTimes, Selvaraju2020Grad-CAM:Localization}.

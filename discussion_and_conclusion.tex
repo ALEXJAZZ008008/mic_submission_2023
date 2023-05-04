@@ -1,12 +1,12 @@
 % \vspace{-0.5cm}
 
 \section{Discussion and Conclusion} \label{sec:discussion}
-    From~\Fref{sec:results} it appears that the likelihood based methods provide the best results most often.
+    From a comparison of errors and a visual analysis it appears that the likelihood based methods provide the best results most often.
     
-    The model used for the DeepHit method has more parameters than the model used for all other methods (due to outputting more values), thus it may not be an entirely fair comparison. However, while using a larger model the method does not provide results any better than the likelihood losses.
+    The model used for the DeepHit method had more parameters than the model used for all other methods (due to the output being larger), thus it may not be an entirely fair comparison. However, while using a larger model the method does not provide results significantly better than the likelihood losses.
     
-    When clinical features are used it seems to improve results, although not significantly. For the increase in complexity it may not be worth including.
+    When clinical features were used it seems to improve results, although not significantly. For the increase in complexity it may not be worth including.
     
-    What cannot be seen from these results though is that they also take the least amount of time to compute. The DeepHit method takes slightly longer than the likelihood based methods and the cox \gls{MB} method takes magnitudes longer.
+    What is not factored into the results is computation time. The Cox method without \gls{MB} is the fastest to compute, the likelohood methods are not much longer. The DeepHit method takes slightly longer than both previous methods while the cox \gls{MB} method takes magnitudes longer.
 
     % In the future it may be interesting to take the survival time output from the models presented here and use them as part of a generative model to predict \gls{CT} acquisitions with a lower survival time.
