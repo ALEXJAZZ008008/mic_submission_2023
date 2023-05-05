@@ -1,21 +1,21 @@
-% \vspace{-0.5cm}
+\vspace{-0.5cm}
 
-\section{Results} \label{sec:results}
-    \begin{table*}
-        % \vspace{-0.5cm}
+\section{Results} \label{sec:results}   
+    \begin{table}
+        \vspace{-0.5cm}
         
         \centering
         
         \captionsetup{singlelinecheck=false, justification=centering}
         \caption{
             % \tiny
-            A comparison of \gls{MAE} and \gls{RAE} calculated for the uncensored predictions and true data plus the concordance index and the Brier score. Here U Likelihood refers to Uniform Likelihood loss and CF refers to when the clinical features were included in the model.
+            A comparison of \gls{MAE}, \gls{RAE}, the concordance index, and the Brier score. Here U Likelihood refers to Uniform Likelihood model and CF refers to when the clinical features were included in the model.
         }
         
-        % \vspace{-0.5cm}
+        \vspace{-0.25cm}
         
+        \resizebox*{1.0\linewidth}{0.1\textheight}
         % \resizebox*{1.0\linewidth}{!}
-        \resizebox*{1.0\linewidth}{!}
         {
             \begin{tabular}{||c|cc|c|c||}
                 \hline
@@ -39,6 +39,26 @@
         \label{tab:table}
         
         % \vspace{-0.5cm}
-    \end{table*}
+    \end{table}
 
-    From~\Fref{tab:table} it can be seen that the the \gls{MAE} and \gls{RAE} are often lower for both likelihood based methods than for all other methods. The \gls{MAE} and \gls{RAE} for the DeepHit method is lower than that of the Cox based methods, while for the Cox based methods not only are their errors high but they also have a substantially higher variance. The \gls{MAE} and \gls{RAE} of the uniform likelihood method is often lower than that of the standard likelihood method. The Brier score results also back up this assertion, however it is difficult to draw conclusions from the concordance index results. The results also seem to indicate that there is some benefit to including the clinical features, although from these results alone it is not possible to say if this is due to the added information from the clinical features or the increase in model size.
+    \begin{figure}
+        % \vspace{-0.5cm}
+        
+        \centering
+
+        \includegraphics[width=1.0\linewidth]{Figures/grad_cam.jpg}
+        % \includegraphics[width=1.0\linewidth]{Figures/grad_cam.jpg}
+        
+        \vspace{-0.25cm}
+        
+        \captionsetup{singlelinecheck=false, justification=centering}
+        \caption{
+            % \scriptsize
+            From left to right a slice through a fibrotic region of a Grad-CAM image, taken from a middle convolution, for; Uniform Likelihood, Likelihood, Cox, Cox \gls{MB}, and DeepHit. All colour maps are consistent for all images.
+        }
+        \label{fig:grad_cam}
+        
+       \vspace{-0.5cm}
+   \end{figure}
+
+    From~\Fref{tab:table} it can be seen that the the \gls{MAE} and \gls{RAE} are often lower for both likelihood based models than for all other models. The \gls{MAE} and \gls{RAE} for the DeepHit model is lower than that of the Cox based model, while for the Cox based models not only are their errors high but they also have a substantially higher variance. The \gls{MAE} and \gls{RAE} of the uniform likelihood model is often lower than that of the standard likelihood model. The Brier score results also back up this assertion, however it is difficult to draw conclusions from the concordance index results. The results also seem to indicate that there is some benefit to including the clinical features, although from these results alone it is not possible to say if this is due to the added information from the clinical features or the increase in model size. From~\Fref{fig:grad_cam} it can be seen that both likelihood based model and DeepHit produced updates which identified the fibrosis in both lungs, the Cox based model only seemed to detect fibrosis in the left lung. Both likelihood models seemed to extract updates which are less noisy than the DeepHit update.

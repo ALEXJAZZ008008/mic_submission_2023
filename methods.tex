@@ -1,29 +1,33 @@
-% \vspace{-0.5cm}
+\vspace{-0.5cm}
 
 \section{Methods} \label{sec:methods}
     \subsection{Data Acquisition and Preparation} \label{sec:data_acquisition_and_preparation}
-        $550$ \gls{CT} acquisitions were taken from the \gls{OSIC} data set~\cite{OSICRepository}. Each acquisition had a \gls{FOV} containing the base of the lung, heart and upper lung. Each acquisition was segmented to remove data outside of the lung and normalised independently. Where appropriate clinical features, such as age, sex, and medical data were also used. If missing clinical features were present their value was imputed following~\cite{Shahin2022SurvivalData}. Data were split into train and test groups using five fold \gls{CV}.
+        A total of $550$ \gls{CT} acquisitions were taken from the \gls{OSIC} data set~\cite{OSICOSICRepository}. Each volume was segmented to remove data outside of the lung and was normalised independently. Where appropriate, clinical features, such as age and sex were also used. If missing clinical features were present, their value was imputed following~\cite{Shahin2022SurvivalData}. Data were split into train and test groups using five fold \gls{CV}.
+
+    \vspace{-0.5cm}
 
     \subsection{Models} \label{sec:models}
-        Each \gls{NN} consisted of seven \gls{CNN} blocks, within which were two convolutions with stride one and one with stride two (to reduce the spatial dimension). Each convolution had a kernel size of three and used an orthogonal activation. Between each layer was a \gls{PReLU} activation~\cite{He2015DelvingClassification}, initialised with an alpha of one (meaning the network begins linear and becomes more non-linear as training progresses). At each downsampling step the number of channels doubled. Global average pooling and flattening layers were used before a number of fully connected layers were used to reduce the number of units until it equals the output size by halving each time. When clinical features were used, they were concatenated to the output of the flattening layer. A softplus activation was used at the output for numerical stability.
+        Each \gls{NN} consisted of seven \gls{CNN} blocks, within which were two convolutions with stride one and one with stride two. Each convolution had a kernel size of three and used an orthogonal activation~\cite{Hu2020ProvableNetworks}. Between each layer there was a \gls{PReLU} activation~\cite{He2015DelvingClassification}, initialised with $\alpha$ set to one (meaning the network begins linear and becomes more non-linear as training progresses). At each downsampling step, the number of channels doubled. Global average pooling and flattening layers were used before fully connected layers reduced the number of units until it equals the output size (by halving the number of units at each layer). When clinical features were used, they were concatenated to the output of the flattening layer. A softplus activation was used at the output for numerical stability.
 
-        AdamW was used as the optimiser with weight decay to improve the convergence rate as well as to penalise against large weights and overfitting~\cite{Loshchilov2019DecoupledRegularization}. The learning rate started at zero and increased linearly to the target learning rate over the first one tenth of iterations before reducing back to zero over the next nine tenths. For each loss calculation a batch size of four was used, this is because Cox loss requires a batch size greater than one and for the sake of comparison the same number was used for all losses. This was approximately increased to $32$ using gradient accumulation, meaning eight gradients were averaged together at each iteration.
+        AdamW was used as the optimiser, with weight decay, to improve the convergence rate as well as to penalise against large weights and overfitting~\cite{Loshchilov2019DecoupledRegularization}. The learning rate started close to zero and increased linearly to the target learning rate over the first one tenth of iterations, before reducing back to close to zero over the next nine tenths. For each loss calculation a batch size of four was used, this is because Cox loss requires a batch size greater than one (for the sake of comparison the same number was used for all losses). This was approximately increased to $32$ using gradient accumulation, meaning eight gradients were averaged together at each iteration.
 
         For comparison, five loss functions were trialed:
 
         \begin{itemize}
-            \item \textbf{Uniform Likelihood} - Gaussian likelihood loss where the censoring time was sampled from a uniform distribution from time zero up to the death time~\cite{Shahin2023DeepAnalysis}.
+            \item \textbf{Uniform Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a uniform distribution from time zero up to the death time~\cite{Shahin2023DeepAnalysis}.
 
-            \item \textbf{Likelihood} - Gaussian likelihood loss where the censoring time was sampled from a Gaussian distribution parameterised by the censor time.
+            \item \textbf{Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a Gaussian distribution parameterised by the censor time.
 
-            \item \textbf{Cox} - Cox Proportional Hazards loss~\cite{Cox1972RegressionLife-Tables}.
+            \item \textbf{Cox} - Cox Proportional Hazards~\cite{Cox1972RegressionLife-Tables}.
 
-            \item \textbf{Cox \gls{MB}} - Cox Proportional Hazards loss with \gls{MB}~\cite{Shahin2022SurvivalData}.
+            \item \textbf{Cox \gls{MB}} - Cox Proportional Hazards with \gls{MB}~\cite{Shahin2022SurvivalData}.
 
-            \item \textbf{DeepHit} - DeepHit loss (log-likelihood, with a maximum output value of $105$ years and $840$ bins)~\cite{Lee2018DeepHit:Risks}.
+            \item \textbf{DeepHit} - Log-likelihood, with a maximum output value of $105$ years and $840$ bins~\cite{Lee2018DeepHit:Risks}.
         \end{itemize}
 
         For both likelihood losses a fixed \gls{STD} equal to one year was used. For both Cox losses the output was converted to survival times using the Breslow estimator~\cite{Breslow1974CovarianceData}.
 
+    \vspace{-0.5cm}
+
     \subsection{Evaluation} \label{sec:evaluation}
-        For evaluation of the results of the five loss functions the following methods were used; the \gls{MAE} and \gls{RAE} for the uncensored data between the predicted and true value was taken, the concordance index, the Brier score and a visual analysis of Grad-CAM images~\cite{Raykar2008OnIndex, Gerds2006ConsistentTimes, Selvaraju2020Grad-CAM:Localization}.
+        For evaluation of the results of the five loss functions the following methods were used; the \gls{MAE} and \gls{RAE} for the uncensored data between the predicted and true value was taken, the concordance index, the Brier score and a visual analysis of Grad-CAM images~\cite{Raykar2008OnIndex, Gerds2006ConsistentTimes, Selvaraju2020Grad-CAM:Localization}. For Grad-CAM a slice was used which displayed fibrosis in the base of both lungs. Only the model without clinical features was used for Grad-CAM extraction.
