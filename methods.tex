@@ -16,7 +16,7 @@
         \begin{itemize}
             \item \textbf{Uniform Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a uniform distribution from time zero up to the death time~\cite{Shahin2023DeepAnalysis}.
 
-            \item \textbf{Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a Gaussian distribution parameterised by the censor time.
+            \item \textbf{Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a Gaussian distribution parameterised by the censor time. This is one of the classical ways to handle censoring~\cite{Lee2018DeepHit:Risks}.
 
             \item \textbf{Cox} - Cox Proportional Hazards~\cite{Cox1972RegressionLife-Tables}.
 
@@ -30,4 +30,4 @@
     \vspace{-0.5cm}
 
     \subsection{Evaluation} \label{sec:evaluation}
-        For evaluation of the results of the five loss functions the following methods were used; the \gls{MAE} and \gls{RAE} for the uncensored data between the predicted and true value was taken, the concordance index, the Brier score and a visual analysis of Grad-CAM images~\cite{Raykar2008OnIndex, Gerds2006ConsistentTimes, Selvaraju2020Grad-CAM:Localization}. For Grad-CAM a slice was used which displayed fibrosis in the base of both lungs. Only the model without clinical features was used for Grad-CAM extraction.
+        For evaluation of the results of the five loss functions the following methods were used; the \gls{MAE} and \gls{RAE} for the uncensored data between the predicted and true value was taken, the concordance index, the Brier score and a visual analysis of Grad-CAM images~\cite{Raykar2008OnIndex, Gerds2006ConsistentTimes, Selvaraju2020Grad-CAM:Localization}. For display of Grad-CAM a slice was selected which displayed fibrosis in the base of both lungs. Only the model without clinical features was used for Grad-CAM extraction.
