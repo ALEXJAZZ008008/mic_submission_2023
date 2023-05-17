@@ -1,4 +1,4 @@
-\vspace{-0.5cm}
+\vspace{-0.25cm}
 
 \section{Methods} \label{sec:methods}
     \subsection{Data Acquisition and Preparation} \label{sec:data_acquisition_and_preparation}
@@ -7,16 +7,16 @@
     \vspace{-0.5cm}
 
     \subsection{Models} \label{sec:models}
-        Each \gls{NN} consisted of seven \gls{CNN} blocks, within which were two convolutions with stride one and one with stride two. Each convolution had a kernel size of three and used an orthogonal activation~\cite{Hu2020ProvableNetworks}. Between each layer there was a \gls{PReLU} activation~\cite{He2015DelvingClassification}, initialised with $\alpha$ set to one (meaning the network begins linear and becomes more non-linear as training progresses). At each downsampling step, the number of channels doubled. Global average pooling and flattening layers were used before fully connected layers reduced the number of units until it equals the output size (by halving the number of units at each layer). When clinical features were used, they were concatenated to the output of the flattening layer. A softplus activation was used at the output for numerical stability.
+        Each \gls{NN} consisted of seven \gls{CNN} blocks, within which were two convolutions with stride one and one with stride two. Each convolution had a kernel size of three and used an orthogonal activation~\cite{Hu2020ProvableNetworks}. Between each layer there was a \gls{PReLU} activation~\cite{He2015DelvingClassification}, initialised with $\alpha$ set to one (meaning the network begins linear and becomes more non-linear as training progresses). At each downsampling step, the number of channels doubled. Global average pooling and flattening layers were used before fully connected layers reduced the number of units until it equals the output size (by halving the number of units at each layer). When clinical features were used, they were concatenated to the output of the flattening layer. A softplus activation was used at the output for numerical stability. The model architecture was selected using the Event Conditional Likelihood loss.
 
-        AdamW was used as the optimiser, with weight decay, to improve the convergence rate as well as to penalise against large weights and overfitting~\cite{Loshchilov2019DecoupledRegularization}. The learning rate started close to zero and increased linearly to the target learning rate over the first one tenth of iterations, before reducing back to close to zero over the next nine tenths. For each loss calculation a batch size of four was used, this is because Cox loss requires a batch size greater than one (for the sake of comparison the same number was used for all losses). This was approximately increased to $32$ using gradient accumulation, meaning eight gradients were averaged together at each iteration.
+        AdamW was used as the optimiser, with weight decay, to improve the convergence rate as well as to penalise against large weights and overfitting~\cite{Loshchilov2019DecoupledRegularization}. The learning rate started close to zero and increased linearly to the target learning rate over the first one tenth of iterations, before reducing back to close to zero over the next nine tenths. For each loss calculation a batch size of four was used, this is because Cox loss requires a batch size greater than one (for the sake of comparison the same number was used for all losses). This was approximately increased to $32$ using gradient accumulation, meaning eight gradients were averaged together at each iteration. Because of the \gls{MB} the effective batch size of Cox \gls{MB} was greater.
 
         For comparison, five loss functions were trialed:
 
         \begin{itemize}
-            \item \textbf{Uniform Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a uniform distribution from time zero up to the death time~\cite{Shahin2023DeepAnalysis}.
+            \item \textbf{Event Conditional Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a uniform distribution from time zero up to the death time~\cite{Shahin2023DeepAnalysis}.
 
-            \item \textbf{Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a Gaussian distribution parameterised by the censor time. This is one of the classical ways to handle censoring~\cite{Lee2018DeepHit:Risks}.
+            \item \textbf{Classical Likelihood} - Maximise likelihood using a Gaussian to model the time of death, where the censoring time was sampled from a Gaussian distribution parameterised by the censor time. This is one of the classical ways to handle censoring~\cite{Lee2018DeepHit:Risks}.
 
             \item \textbf{Cox} - Cox Proportional Hazards~\cite{Cox1972RegressionLife-Tables}.
 

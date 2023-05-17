@@ -30,11 +30,12 @@
 \AtEveryBibitem{\clearfield{issue}}
 \AtEveryBibitem{\clearfield{pages}}
 \AtEveryBibitem{\clearfield{number}}
-\AtEveryBibitem{\clearfield{title}}
+% \AtEveryBibitem{\clearfield{title}}
 \AtEveryBibitem{\clearfield{isbn}}
 \AtEveryBibitem{\clearfield{keywords}}
 \AtEveryBibitem{\clearfield{issn}}
 \AtEveryBibitem{\clearfield{journal}}
+\AtEveryBibitem{\clearfield{publisher}}
 
 \usepackage[activate={true, nocompatibility}, final, tracking=true, kerning=true, spacing=true, factor=1100, stretch=10, shrink=10]{microtype}
 \linespread{0.9}
@@ -45,7 +46,7 @@
     \title{
         \vspace{-0.75cm}
         
-        Neural Network Based Methods for the Survival Analysis of Idiopathic Pulmonary Fibrosis Patients from a Baseline CT Acquisition
+        Deep Learning for CT-Based Survival Analysis of Idiopathic Pulmonary Fibrosis Patients
     }
     
     \author{
@@ -92,7 +93,7 @@
     \maketitle
     
     \begin{abstract}
-        Idiopathic pulmonary fibrosis is an interstitial lung disease that causes scarring of the lungs, leading to a decline in lung function and eventually death. Because this disease has a heterogeneous disease progression, predictive models could guide clinicians in making decisions about disease management. Some survival analysis methods, such as Cox, seek to rank participants based on their predicted survivability. However, Cox cannot directly output a survival time. DeepHit is a neural network based survival analysis method which predicts the most likely histogram bin of survival time. A disadvantage of DeepHit is that, when training, an error of one year is equivalent to an error of one hundred years. A common problem encountered is that training data is often censored, where the exact time of death is unknown except that it is past a censoring time. Here, a comparison of neural network approaches utilising five different losses is presented. Compared are; ranking based approaches (such as Cox or Cox with a memory bank of previous predictions) and death distribution based approaches (such as DeepHit and likelihood with a uniform or Gaussian distribution to sample censoring times). The input to each model is a single computed tomography volume (plus optionally clinical features) and the output is a survival time. Improvements over previous work includes; a larger model with a learned downsampling, a parameterised activation (which starts linear and becomes non-linear), a softplus output, orthogonal initialisation, an optimiser integrating weight decay, gradient accumulation, and an annealed learning rate. Evaluations used include; mean and relative absolute error, the concordance index, the Brier score, and a visual analysis of Grad-CAM results. Overall, the likelihood models performed the best, with DeepHit a close second and both Cox models a distant last. The uniform likelihood model performed marginally better than the alternative.
+        Idiopathic pulmonary fibrosis is an interstitial lung disease that causes scarring of the lungs, leading to a decline in lung function and eventually death. Because this disease has a heterogeneous disease progression, predictive models could guide clinicians in making decisions about disease management. Some survival analysis methods, such as Cox, seek to rank participants based on their predicted survivability. However, Cox cannot directly output a survival time. DeepHit is a neural network based survival analysis method which predicts the most likely histogram bin of survival time. A disadvantage of DeepHit is that, when training, an error of one year is equivalent to an error of one hundred years. A common problem encountered is that training data is often censored, where the exact time of death is unknown except that it is past a censoring time. Here, a comparison of neural network approaches utilising five different losses is presented. Compared are; ranking based approaches (such as Cox or Cox with a memory bank of previous predictions) and death distribution based approaches (such as DeepHit and likelihood with a uniform or Gaussian distribution to sample censoring times). The input to each model is a single computed tomography volume (plus optionally clinical features) and the output is a survival time. Improvements over previous work includes; a larger model with a learned downsampling, a parameterised activation (which starts linear and becomes non-linear), a softplus output, orthogonal initialisation, an optimiser integrating weight decay, gradient accumulation, and an annealed learning rate. Evaluations used include; mean and relative absolute error, the concordance index, the Brier score, and a visual analysis of Grad-CAM results. Overall, the likelihood models performed the best, with DeepHit a close second and both Cox models a distant last. The Event Conditional Likelihood model performed marginally better than the alternative.
     \end{abstract}
     
     \input{introduction}
